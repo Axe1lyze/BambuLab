@@ -48,8 +48,8 @@ M1006 W
 M400
 M18
 
-M106 S255 ; turn 100% fan;
 M109 S50
+M106 S255; turn 100% fan;
 M190 S50
 M106 S0 ; turn off fan
 
