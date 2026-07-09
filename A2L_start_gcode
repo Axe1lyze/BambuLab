@@ -58,21 +58,6 @@ M1006 W
   M982.2 S1 ;
   M983.4 S0
 ;===== reset machine status =================
-;Set the filament gear warning temperature
-{if (temperature_vitrification[initial_filament_id] <= 50)}
-    {if ((filament_ids[initial_filament_id]=="GFA05") || (filament_ids[initial_filament_id]=="GFA06"))}
-        M142 P1 O45;
-    {else}
-        M142 P1 O60;
-    {endif}
-{else}
-    M142 P1 O100 ;
-{endif}
-;===== start to heat heatbed & hotend==========
-  M1002 set_filament_type:{filament_type[initial_no_support_filament_id]}
-  M104 S140 A
-
-  G29.2 S0 ;
 
 ;===== first homing start =====
   M1002 gcode_claim_action : 13
@@ -80,7 +65,7 @@ M1006 W
   G28 X Z P0 T300 W
   G150.3
   G1 Z1.3 F1200
-  G150.1 F16000 ;
+;  G150.1 F16000 ; nozzle cleaning
   G90
   M400
 ;===== first homing end =====
@@ -105,8 +90,6 @@ M622 S1
 M623
 ;===== build_plate_detect_flag end =====
 ;===== detection end =====
-
-
 
 
 ;===== auto extrude cali start =========================
@@ -136,23 +119,6 @@ M623
 ;    M400
 ;  M623
 ;===== auto extrude cali end =========================
-
-
-  {if filament_type[initial_filament_id] == "TPU" ||
-  filament_type[initial_filament_id] == "PVA"}
-  {else}
-    M83
-    G1 E-3 F1800
-    M400 P500
-  {endif}
-  G0 Z1.3 F1200
-  G150.2
-  G150.1 F16000
-
-  G91
-  G1 X20 F12000 ;
-  G90
-  M400
 
 
 ;===== wipe nozzle start =====
