@@ -78,11 +78,31 @@ M1006 W
   G28 X Z P0 T300 W
   G150.3
   G1 Z1.3 F1200
-  G150.1 F16000 ; wipe mouth to avoid filament stick to heatbed
+  ;G150.1 F16000 ; wipe mouth to avoid filament stick to heatbed
   G90
   M400
 ;===== first homing end =====
 
+M109 S140
+M104 S{nozzle_temperature_initial_layer[initial_no_support_filament_id]}
+
+;======== enhance brush nozzle start =====
+M1002 gcode_claim_action : 14
+G150.1 F16000
+G91
+G1 Y5   F5000
+G1 X-20 F16000
+G1 Y-10 F5000
+G1 X-20 F16000
+G1 Y10  F5000
+G1 X20  F16000
+G1 Y-10 F5000
+G1 X20  F16000
+G1 Y5   F5000
+G90
+G150.1 F16000
+G150.3
+;======== enhance brush nozzle end =====
 
 ;===== detection start =====
 ;===== build_plate_detect_flag start =====
@@ -95,7 +115,7 @@ M622 S1
   G0 Y319 F3000
   G91
   G1 Z-5 F1200
-  G28 Z P0 T140
+;  G28 Z P0 T140
   G1 F1200
   G39.4
   G90
@@ -105,44 +125,10 @@ M623
 ;===== detection end =====
 
 
-
-;===== wipe nozzle start =====
-  M1002 gcode_claim_action : 14
-  ;G150 T{nozzle_temperature_initial_layer[initial_no_support_filament_id]}
-  G150 T140
-
-  M400
-  M109 S140 A
-  M106 P1 S255
-  G91
-  G1 Z1.3 F1200
-  G90
-  M400 S1
-  M104 S{nozzle_temperature_initial_layer[initial_no_support_filament_id]}
-  
-  ;======== enhance brush nozzle start =====
-  G150.1 F16000
-  G91
-  G1 Y5   F5000
-  G1 X-20 F16000
-  G1 Y-10 F5000
-  G1 X-20 F16000
-  G1 Y10  F5000
-  G1 X20  F16000
-  G1 Y-10 F5000
-  G1 X20  F16000
-  G1 Y5   F5000
-  G90
-  G150.1 F16000
-  G150.3
-  ;======== enhance brush nozzle end =====
-  M106 P1 S0
-;===== wipe nozzle end =====
-
   M985.1 U0 E2
   M985.1 U1 E2
 
-  G150.3 ; move to garbage can to wait for temp
+  ;G150.3 ; move to garbage can to wait for temp
 
 ;===== wait temperature reaching the reference value =======
   {if hold_chamber_temp_for_flat_print && (bed_temperature_initial_layer_single == 55)}
